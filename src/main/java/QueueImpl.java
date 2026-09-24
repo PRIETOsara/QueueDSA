@@ -3,7 +3,7 @@ import org.apache.log4j.Logger;
 public class QueueImpl<E> implements Queue<E>{
     final static Logger logger = Logger.getLogger(QueueImpl.class);
 
-    private E[] data;
+    final private E[] data;
     private int p;
 
     public QueueImpl(int len) {
@@ -28,24 +28,30 @@ public class QueueImpl<E> implements Queue<E>{
 
 
     public E pop() throws EmptyQueueException {
-        // TO-DO
+        if (isEmpty()) throw new EmptyQueueException();
         logger.info("pre: 'pop' nou element ");
-        return null;
+        int i;
+        E e = this.data[0];
+        for (i=1; i<this.p; i++)
+        {
+            this.data[i-1] = this.data[i];
+        }
+
+        this.data[p] = null;
+        this.p--;
+
+        return e;
     }
 
     private boolean isFull() {
-        // TO-DO
-        //return this.p == this.data.length;
-        return false;
+        return this.p == this.data.length;
     }
 
     private boolean isEmpty() {
-        // TO-DO
-        return false;
+        return this.p == 0;
     }
 
     public int size() {
-        //TO-DO
         return this.p;
     }
 }
